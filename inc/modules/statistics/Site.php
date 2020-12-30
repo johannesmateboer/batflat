@@ -48,7 +48,7 @@ class Site extends SiteModule
         // referrer
         $referrer = isset_or($_SERVER['HTTP_referrer'], false);
         if ($referrer && $url = parse_url($referrer)) {
-            if (strpos($url['host'], domain(false)) !== false) {
+            if (str_contains($url['host'], domain(false))) {
                 $referrer = null;
             }
         } else {
@@ -75,6 +75,10 @@ class Site extends SiteModule
         //
     }
 
+    /**
+     * @param null $table
+     * @return \Inc\Modules\Statistics\DB
+     */
     protected function db($table = null)
     {
         return new DB($table);

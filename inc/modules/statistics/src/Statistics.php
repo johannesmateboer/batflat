@@ -6,7 +6,13 @@ use Inc\Modules\Statistics\DB;
 
 class Statistics
 {
-    public function getReferrers($url = null, $limit = 15, $bot = false)
+    /**
+     * @param null $url
+     * @param int $limit
+     * @param false $bot
+     * @return array
+     */
+    public function getReferrers($url = null, $limit = 15, $bot = false): array
     {
         $query = $this->db('statistics')
             ->select([
@@ -25,12 +31,15 @@ class Statistics
             $query->limit($limit);
         }
 
-        $urls = $query->toArray();
-
-        return $urls;
+        return $query->toArray();
     }
 
-    public function getPages($referrer = null, $limit = 15)
+    /**
+     * @param null $referrer
+     * @param int $limit
+     * @return array
+     */
+    public function getPages($referrer = null, $limit = 15): array
     {
         $query = $this->db('statistics')
             ->select([
@@ -49,12 +58,14 @@ class Statistics
             $query->where('referrer', $referrer);
         }
 
-        $urls = $query->toArray();
-
-        return $urls;
+        return $query->toArray();
     }
 
-    public function countCurrentOnline($margin = "-5 minutes")
+    /**
+     * @param string $margin
+     * @return int
+     */
+    public function countCurrentOnline($margin = "-5 minutes"): int
     {
         $online = $this->db('statistics')
             ->select([
@@ -67,7 +78,14 @@ class Statistics
         return $online['count'];
     }
 
-    public function countAllVisits($date = 'TODAY', $days = 1, $url = null, $referrer = null)
+    /**
+     * @param string $date
+     * @param int $days
+     * @param null $url
+     * @param null $referrer
+     * @return int
+     */
+    public function countAllVisits($date = 'TODAY', $days = 1, $url = null, $referrer = null) : int
     {
         $query = $this->db('statistics')
             ->select([
@@ -92,7 +110,14 @@ class Statistics
         return $all['count'];
     }
 
-    public function countUniqueVisits($date = 'TODAY', $days = 1, $url = null, $referrer = null)
+    /**
+     * @param string $date
+     * @param int $days
+     * @param null $url
+     * @param null $referrer
+     * @return int
+     */
+    public function countUniqueVisits($date = 'TODAY', $days = 1, $url = null, $referrer = null) : int
     {
         $query = $this->db('statistics')
             ->select([
@@ -117,6 +142,10 @@ class Statistics
         return $record['count'];
     }
 
+    /**
+     * @param $table
+     * @return DB
+     */
     protected function db($table)
     {
         return new DB($table);

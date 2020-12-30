@@ -62,7 +62,7 @@ abstract class Main
      *
      * @var \Inc\Core\Lib\ModulesCollection|null
      */
-    public $module = null;
+    public ?Lib\ModulesCollection $module = null;
 
     /**
      * Settings cache

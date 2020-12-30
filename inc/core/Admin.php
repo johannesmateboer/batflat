@@ -21,21 +21,21 @@ class Admin extends Main
      *
      * @var array
      */
-    private $assign = [];
+    private array $assign = [];
 
     /**
      * Registered module pages
      *
      * @var array
      */
-    private $registerPage = [];
+    private array $registerPage = [];
 
     /**
      * Instance of Modules Collection
      *
      * @var \Inc\Core\Lib\ModulesCollection
      */
-    public $module = null;
+    public ?Lib\ModulesCollection $module = null;
 
     /**
      * Admin constructor
@@ -51,11 +51,11 @@ class Admin extends Main
     }
 
     /**
-    * set variables to template core and display them
-    * @param string $file
-    * @return void
-    */
-    public function drawTheme($file)
+     * set variables to template core and display them
+     * @param string $file
+     * @return void
+     */
+    public function drawTheme(string $file)
     {
         $username = $this->getUserInfo('fullname', null, true);
         $access = $this->getUserInfo('access');
@@ -65,7 +65,7 @@ class Admin extends Main
         $this->assign['path']          = url();
         $this->assign['version']       = $this->settings->get('settings.version');
         $this->assign['has_update']    = $this->module ? $this->module->settings->_checkUpdate() : false;
-        $this->assign['update_access'] = ($access == 'all') || in_array('settings', explode(',', $access)) ? true : false;
+        $this->assign['update_access'] = ($access == 'all') || in_array('settings', explode(',', $access));
 
         $this->assign['header'] = isset_or($this->appends['header'], ['']);
         $this->assign['footer'] = isset_or($this->appends['footer'], ['']);
@@ -75,11 +75,11 @@ class Admin extends Main
     }
 
     /**
-    * load language files
-    * @param string $lang
-    * @return void
-    */
-    private function loadLanguage($language)
+     * load language files
+     * @param string $language
+     * @return void
+     */
+    private function loadLanguage(string $language)
     {
         $this->lang['name'] = $language;
 
@@ -98,13 +98,13 @@ class Admin extends Main
     }
 
     /**
-    * load module and set variables
-    * @param string $name
-    * @param string $feature
-    * @param array $params (optional)
-    * @return void
-    */
-    public function loadModule($name, $method, $params = [])
+     * load module and set variables
+     * @param string $name
+     * @param $method
+     * @param array $params (optional)
+     * @return void
+     */
+    public function loadModule(string $name, $method, $params = [])
     {
         $row = $this->module->{$name};
 
@@ -133,11 +133,11 @@ class Admin extends Main
     }
 
     /**
-    * create list of modules
-    * @param string $activeModile
-    * @param string $activeFeature
-    * @return void
-    */
+     * create list of modules
+     * @param $activeModule
+     * @param $activeMethod
+     * @return void
+     */
     public function createNav($activeModule, $activeMethod)
     {
         $nav = [];
@@ -199,14 +199,13 @@ class Admin extends Main
     }
 
     /**
-    * get module informations
-    * @param string $dir
-    * @return array
-    */
-    public function getModuleInfo($dir)
+     * get module informations
+     * @param string $dir
+     * @return mixed
+     */
+    public function getModuleInfo(string $dir)
     {
         $file = MODULES.'/'.$dir.'/Info.php';
-        $core = $this;
 
         if (file_exists($file)) {
             return include($file);
@@ -230,13 +229,13 @@ class Admin extends Main
     }
 
     /**
-    * get module method
-    * @param string $dir
-    * @param string $feature
-    * @param array $params (optional)
-    * @return array
-    */
-    public function getModuleMethod($name, $method, $params = [])
+     * Get module method
+     * @param string $name
+     * @param string $method
+     * @param array $params
+     * @return mixed
+     */
+    public function getModuleMethod(string $name, string $method, array $params = []): mixed
     {
         if (method_exists($this->module->{$name}, $method)) {
             return call_user_func_array([$this->module->{$name}, $method], array_values($params));
@@ -247,12 +246,13 @@ class Admin extends Main
     }
 
     /**
-    * user login
-    * @param string $username
-    * @param string $password
-    * @return bool
-    */
-    public function login($username, $password, $remember_me = false)
+     * user login
+     * @param string $username
+     * @param string $password
+     * @param bool $remember_me
+     * @return bool
+     */
+    public function login(string $username, string $password, bool $remember_me = false)
     {
         // Check attempt
         $attempt = $this->db('login_attempts')->where('ip', $_SERVER['REMOTE_ADDR'])->oneArray();
@@ -337,7 +337,7 @@ class Admin extends Main
      * @param string $path
      * @return void
      */
-    private function registerPage($name, $path)
+    private function registerPage(string $name, string $path)
     {
         $this->registerPage[] = ['id' => null, 'title' => $name, 'slug' => $path];
     }
@@ -347,7 +347,7 @@ class Admin extends Main
      *
      * @return array
      */
-    public function getRegisteredPages()
+    public function getRegisteredPages(): array
     {
         return $this->registerPage;
     }

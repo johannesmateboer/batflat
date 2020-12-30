@@ -18,19 +18,19 @@ use Inc\Modules\Statistics\Src\Statistics;
 class Admin extends AdminModule
 {
     /**
-     * @var string
+     * @var ?string
      */
-    protected $moduleDirectory = null;
+    protected ?string $moduleDirectory = null;
 
     /**
-     * @var Chart
+     * @var ?Chart
      */
-    protected $chart = null;
+    protected ?Chart $chart = null;
 
     /**
-     * @var Statistics
+     * @var ?Statistics
      */
-    protected $statistics = null;
+    protected ?Statistics $statistics = null;
 
     public function init()
     {

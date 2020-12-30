@@ -15,9 +15,9 @@ use Inc\Core\AdminModule;
 
 class Admin extends AdminModule
 {
-    private $assign = [];
+    private array $assign = [];
 
-    public function navigation()
+    public function navigation(): array
     {
         return [
             $this->lang('manage', 'general')    => 'manage',
@@ -27,8 +27,10 @@ class Admin extends AdminModule
     }
 
     /**
-    * list of posts
-    */
+     * list of posts
+     * @param int $page
+     * @return string
+     */
     public function anyManage($page = 1)
     {
         if (isset($_POST['delete'])) {
@@ -120,16 +122,18 @@ class Admin extends AdminModule
     /**
     * add new post
     */
-    public function getAdd()
+    public function getAdd(): string
     {
         return $this->getEdit(null);
     }
 
 
     /**
-    * edit post
-    */
-    public function getEdit($id = null)
+     * edit post
+     * @param null $id
+     * @return string
+     */
+    public function getEdit($id = null): string
     {
         $this->assign['manageURL'] = url([ADMIN, 'blog', 'manage']);
         $this->assign['coverDeleteURL'] = url([ADMIN, 'blog', 'deleteCover', $id]);

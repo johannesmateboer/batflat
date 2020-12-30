@@ -21,7 +21,7 @@ abstract class AdminModule extends BaseModule
      *
      * @return array
      */
-    public function navigation()
+    public function navigation(): array
     {
         return [];
     }
